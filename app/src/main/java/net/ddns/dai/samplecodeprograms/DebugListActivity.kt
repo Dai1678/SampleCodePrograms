@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.content.pm.PackageManager.NameNotFoundException
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -17,7 +18,7 @@ class DebugListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_debug_list)
 
-        val listView : ListView = findViewById(R.id.debug_list)
+        val listView = findViewById<ListView>(R.id.debug_list)
         val list = arrayListOf<String>()
 
         try {
@@ -27,9 +28,9 @@ class DebugListActivity : AppCompatActivity() {
             packageInfo.activities
                     .asSequence()
                     .filter { it.name.contains(packageName) }   //ライブラリなどのactivityは表示しないように比較
-                    .mapTo(list) { it.name.split(Regex(packageName + "."), 0)[1] }  // activity名のみ取得できるようにsplit
+                    .mapTo(list) { it.name.split(Regex("$packageName."), 0)[1] }  // activity名のみ取得できるようにsplit
 
-        }catch (e: PackageManager.NameNotFoundException){
+        }catch (e: NameNotFoundException){
             e.printStackTrace()
         }
 
@@ -40,7 +41,7 @@ class DebugListActivity : AppCompatActivity() {
             val activityName = parent.getItemAtPosition(position)
             try {
                 //パッケージ名を追加してclassを指定
-                val myClass = Class.forName(packageName + "." + activityName)
+                val myClass = Class.forName("$packageName.$activityName")   // + "~" + で繋げなくても$変数名でできる
                 val intent = Intent(this, myClass)
                 startActivity(intent)
             }catch (e: ClassNotFoundException){
