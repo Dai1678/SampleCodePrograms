@@ -39,11 +39,11 @@
 
         </LinearLayout>
 
-        <!-- フローティングアクションボタン(fab)の実装方法は2つ
+        <!-- フローティングアクションボタン(fab)の実装方法は3つ
             ・ このようにLinearLayoutがrootタグのものはコンテンツ部分をFrameLayoutで囲う
-             親rootをRelativeLayoutにしている場合はfabの位置指定の書き方が異なる
-            ・toolbar解説のところのように、rootタグをCoordinatorLayoutで利用している場合はFrameLayoutなしでできる
-             利点としてスクロールしたときにヘッダーを隠すアニメーションなどを取り入れられる
+            ・ rootタグをRelativeLayoutにしている場合はFrameLayoutなしでできるが、fabの位置指定の書き方が異なる
+            ・ toolbar解説のところのように、rootタグをCoordinatorLayoutで利用している場合はFrameLayoutなしでできる
+              利点としてスクロールしたときにヘッダーを隠すアニメーションなどを取り入れられる
          -->
 
         <android.support.design.widget.FloatingActionButton

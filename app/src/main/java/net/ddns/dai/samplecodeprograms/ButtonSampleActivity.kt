@@ -21,7 +21,7 @@ class ButtonSampleActivity : AppCompatActivity(), View.OnClickListener {
         val actionBar = supportActionBar
         actionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        textChangeButton.setOnClickListener(this)   //findViewByIdの一文を書かなくてもxmlのidで指定できる！！
+        textChangeButton.setOnClickListener(this)   //kotlin-android-extensionsのおかげでfindViewByIdの一文を書かなくてもxmlのidで指定できる！！
         fab.setOnClickListener(this)
 
     }
