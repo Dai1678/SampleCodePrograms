@@ -30,7 +30,6 @@ class TextSampleActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_text_sample)
         val binding = DataBindingUtil.setContentView<ActivityTextSampleBinding>(this, R.layout.activity_text_sample)
 
         val actionBar = supportActionBar
@@ -49,7 +48,7 @@ class TextSampleActivity : AppCompatActivity() {
                 //yourPassWordの入力を促す
                 showResult(view, noInput)
             }else{
-                val loginResult = checkLogin(name, yourPassWord, inputUserName, inputUserPassWord)
+                val loginResult = name == inputUserName && yourPassWord == inputUserPassWord
 
                 if (loginResult){
                     //login
@@ -63,10 +62,10 @@ class TextSampleActivity : AppCompatActivity() {
         }
 
         binding.userNameInput.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s!!.length > binding.nameTextInputLayout.counterMaxLength) {
+            override fun beforeTextChanged(charSequence: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(editable: Editable) {}
+            override fun onTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
+                if (charSequence.length > binding.nameTextInputLayout.counterMaxLength) {
                     binding.nameTextInputLayout.error = "ユーザー名は10文字以内で入力してください"
                 } else {
                     binding.nameTextInputLayout.error = null
@@ -87,17 +86,6 @@ class TextSampleActivity : AppCompatActivity() {
         }
 
         return str
-
-    }
-
-    //loginチェック
-    private fun checkLogin(currentName: String, currentPassWord: String, inputName: String, inputPassWord: String): Boolean{
-
-        return if (currentName == inputName){
-            currentPassWord == inputPassWord
-        }else{
-            false
-        }
 
     }
 
