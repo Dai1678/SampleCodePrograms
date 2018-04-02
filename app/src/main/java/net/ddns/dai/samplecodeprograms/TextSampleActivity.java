@@ -3,22 +3,22 @@ package net.ddns.dai.samplecodeprograms;
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputEditText;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import net.ddns.dai.samplecodeprograms.databinding.ActivityTextSampleBinding;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -27,7 +27,7 @@ import java.util.Random;
 
 public class TextSampleActivity extends AppCompatActivity {
 
-    private final int NOINPUT = -2;
+    private final int NoInput = -2;
     private final int LOGIN = 1;
     private final int ERROR = -1;
 
@@ -35,7 +35,7 @@ public class TextSampleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_text_sample);
+        final ActivityTextSampleBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_text_sample);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null){
@@ -44,24 +44,18 @@ public class TextSampleActivity extends AppCompatActivity {
 
         final String name = generateUserName();
 
-        TextView userName = findViewById(R.id.userName);
-        userName.setText("あなたのユーザー名は " + name + " です\n長押しでコピーできます");
+        binding.userName.setText("あなたのユーザー名は " + name + " です\n長押しでコピーできます");
 
-        final EditText editPassWord = findViewById(R.id.editPassWord);
-        final TextInputEditText userNameInput = findViewById(R.id.userNameInput);
-        final TextInputEditText userPassWordInput = findViewById(R.id.userPassWordInput);
-
-        Button loginButton = findViewById(R.id.loginButton);
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        binding.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String yourPassWord = editPassWord.getText().toString();
-                String inputUserName = userNameInput.getText().toString();
-                String inputUserPassWord = userPassWordInput.getText().toString();
+                String yourPassWord = binding.editPassword.getText().toString();
+                String inputUserName = binding.userNameInput.getText().toString();
+                String inputUserPassWord = binding.userPassWordInput.getText().toString();
 
                 if (inputUserName.equals("")){
                     //yourPassWordの入力を促す
-                    showResult(view, NOINPUT);
+                    showResult(view, NoInput);
                 }else{
                     boolean loginResult = name.equals(inputUserName) && yourPassWord.equals(inputUserPassWord);
 
@@ -75,6 +69,29 @@ public class TextSampleActivity extends AppCompatActivity {
                 }
 
             }
+        });
+
+        binding.userNameInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length() > binding.nameTextInputLayout.getCounterMaxLength()){
+                    binding.nameTextInputLayout.setError("ユーザー名は10文字以内で入力してください");
+                }else{
+                    binding.nameTextInputLayout.setError(null);
+                }
+            }
+
+
         });
 
     }
@@ -102,7 +119,7 @@ public class TextSampleActivity extends AppCompatActivity {
         Date date = new Date(System.currentTimeMillis());
 
         switch (result){
-            case NOINPUT:
+            case NoInput:
                 showText = "パスワードを設定してください";
                 break;
 
