@@ -11,7 +11,6 @@
         android:padding="10dp"
         tools:context=".TextSampleActivity">
 
-        <!-- textの色変えたりとか -->
         <TextView
             android:id="@+id/userName"
             android:layout_width="match_parent"
@@ -29,18 +28,16 @@
             android:maxLines="1"
             android:layout_marginTop="20dp" />
 
-        <!-- Button押したら12時間モードと24時間モード切り替え -->
         <TextClock
             android:id="@+id/currentTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:hint="yyyy/MM/dd HH:mm:ss"
             android:textSize="20sp"
             android:timeZone="Asia/Tokyo"
             android:format12Hour="yyyy/MM/dd HH:mm:ss"
             android:format24Hour="yyyy/MM/dd HH:mm:ss"/>
-
-        <!-- アカウント登録フォームみたいなの作りたい -->
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/nameTextInputLayout"

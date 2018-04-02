@@ -61,7 +61,7 @@ class TextSampleActivity : AppCompatActivity() {
 
         }
 
-        binding.userNameInput.addTextChangedListener(object : TextWatcher {
+        binding.userNameInput.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(editable: Editable) {}
             override fun onTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
