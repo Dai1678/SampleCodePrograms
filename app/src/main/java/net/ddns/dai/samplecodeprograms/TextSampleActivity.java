@@ -3,12 +3,13 @@ package net.ddns.dai.samplecodeprograms;
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +19,9 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import net.ddns.dai.samplecodeprograms.databinding.ActivityTextSampleBinding;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -35,7 +38,7 @@ public class TextSampleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final ActivityTextSampleBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_text_sample);
+        setContentView(R.layout.activity_text_sample);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null){
@@ -44,14 +47,22 @@ public class TextSampleActivity extends AppCompatActivity {
 
         final String name = generateUserName();
 
-        binding.userName.setText("あなたのユーザー名は " + name + " です\n長押しでコピーできます");
+        TextView userName = findViewById(R.id.userName);
+        userName.setText("あなたのユーザー名は " + name + " です\n長押しでコピーできます");
 
-        binding.loginButton.setOnClickListener(new View.OnClickListener() {
+        Button loginButton = findViewById(R.id.loginButton);
+        final EditText editPassWord = findViewById(R.id.editPassword);
+        final TextInputEditText userNameInput = findViewById(R.id.userNameInput);
+        final TextInputEditText userPassWordInput = findViewById(R.id.userPassWordInput);
+
+        final TextInputLayout nameTextInputLayout = findViewById(R.id.nameTextInputLayout);
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String yourPassWord = binding.editPassword.getText().toString();
-                String inputUserName = binding.userNameInput.getText().toString();
-                String inputUserPassWord = binding.userPassWordInput.getText().toString();
+                String yourPassWord = editPassWord.getText().toString();
+                String inputUserName = userNameInput.getText().toString();
+                String inputUserPassWord = userPassWordInput.getText().toString();
 
                 if (inputUserName.equals("")){
                     //yourPassWordの入力を促す
@@ -71,9 +82,10 @@ public class TextSampleActivity extends AppCompatActivity {
             }
         });
 
-        binding.userNameInput.addTextChangedListener(new TextWatcher() {
+        //TODO 動作チェック
+        userNameInput.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
 
             }
 
@@ -83,11 +95,11 @@ public class TextSampleActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (charSequence.length() > binding.nameTextInputLayout.getCounterMaxLength()){
-                    binding.nameTextInputLayout.setError("ユーザー名は10文字以内で入力してください");
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                if (charSequence.length() > nameTextInputLayout.getCounterMaxLength()){
+                    nameTextInputLayout.setError("ユーザー名は10文字以内で入力してください");
                 }else{
-                    binding.nameTextInputLayout.setError(null);
+                    nameTextInputLayout.setError(null);
                 }
             }
 
