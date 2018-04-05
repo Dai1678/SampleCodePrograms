@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Intent
 import android.content.res.Resources
-import android.databinding.DataBindingUtil
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
@@ -17,7 +16,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.activity_text_sample.*
-import net.ddns.dai.samplecodeprograms.databinding.ActivityTextSampleBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -30,16 +28,16 @@ class TextSampleActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = DataBindingUtil.setContentView<ActivityTextSampleBinding>(this, R.layout.activity_text_sample)
+        setContentView(R.layout.activity_text_sample)
 
         val actionBar = supportActionBar
         actionBar!!.setDisplayHomeAsUpEnabled(true)
 
         //yourNameを作成
         val name = generateUserName(10)
-        binding.userName.text = "あなたのユーザー名は $name です\n長押しでコピーできます"
+        userName.text = "あなたのユーザー名は${name}です\n長押しでコピーできます"
 
-        binding.loginButton.setOnClickListener { view ->
+        loginButton.setOnClickListener { view ->
             val yourPassWord = editPassword.text.toString()
             val inputUserName = userNameInput.text.toString()
             val inputUserPassWord = userPassWordInput.text.toString()
@@ -61,14 +59,15 @@ class TextSampleActivity : AppCompatActivity() {
 
         }
 
-        binding.userNameInput.addTextChangedListener(object: TextWatcher {
+        //TODO 動作チェック
+        userNameInput.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(editable: Editable) {}
             override fun onTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
-                if (charSequence.length > binding.nameTextInputLayout.counterMaxLength) {
-                    binding.nameTextInputLayout.error = "ユーザー名は10文字以内で入力してください"
+                if (charSequence.length > nameTextInputLayout.counterMaxLength) {
+                    nameTextInputLayout.error = "ユーザー名は10文字以内で入力してください"
                 } else {
-                    binding.nameTextInputLayout.error = null
+                    nameTextInputLayout.error = null
                 }
             }
         })
