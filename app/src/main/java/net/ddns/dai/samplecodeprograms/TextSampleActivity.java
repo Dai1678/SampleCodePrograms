@@ -162,8 +162,7 @@ public class TextSampleActivity extends AppCompatActivity {
                 return true;
 
             case R.id.menuItem:
-                //TODO 記事作ってリンク更新
-                String linkText = "https://www.google.co.jp/";
+                String linkText = "https://qiita.com/daivr7774/items/c5807902c16624c57559";
                 chromeBrowseTab(Uri.parse(linkText));
 
                 return true;
