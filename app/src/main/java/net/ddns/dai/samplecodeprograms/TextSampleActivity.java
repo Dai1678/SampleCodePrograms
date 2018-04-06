@@ -82,7 +82,6 @@ public class TextSampleActivity extends AppCompatActivity {
             }
         });
 
-        //TODO 動作チェック
         userNameInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
