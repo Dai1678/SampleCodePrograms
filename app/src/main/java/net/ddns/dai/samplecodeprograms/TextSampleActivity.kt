@@ -59,7 +59,6 @@ class TextSampleActivity : AppCompatActivity() {
 
         }
 
-        //TODO 動作チェック
         userNameInput.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(editable: Editable) {}
