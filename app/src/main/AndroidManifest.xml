@@ -16,8 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ButtonSampleActivity" />
-        <activity android:name=".TextSampleActivity"></activity>
+        <activity android:name=".button.ButtonSampleActivity" />
+        <activity android:name=".text.TextSampleActivity" />
+        <activity android:name=".nearby.NearByConSampleActivity"></activity>
     </application>
 
 </manifest>

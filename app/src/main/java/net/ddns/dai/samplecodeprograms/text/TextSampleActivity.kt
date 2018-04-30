@@ -1,4 +1,4 @@
-package net.ddns.dai.samplecodeprograms
+package net.ddns.dai.samplecodeprograms.text
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
@@ -16,6 +16,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.activity_text_sample.*
+import net.ddns.dai.samplecodeprograms.R
 import java.text.SimpleDateFormat
 import java.util.*
 

@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:padding="10dp"
-    tools:context=".TextSampleActivity"
+    tools:context=".text.TextSampleActivity"
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
