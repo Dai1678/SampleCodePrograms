@@ -1,13 +1,10 @@
 package net.ddns.dai.samplecodeprograms
 
 import android.content.Intent
-import android.content.pm.ActivityInfo
-import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.NameNotFoundException
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView

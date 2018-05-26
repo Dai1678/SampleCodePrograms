@@ -1,10 +1,11 @@
-package net.ddns.dai.samplecodeprograms.nearby
+package net.ddns.dai.samplecodeprograms.list
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -12,15 +13,47 @@ import android.support.customtabs.CustomTabsIntent
 import android.support.v4.content.ContextCompat
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ArrayAdapter
+import kotlinx.android.synthetic.main.activity_list_sample.*
+import kotlinx.coroutines.experimental.CancellationException
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
 import net.ddns.dai.samplecodeprograms.R
-import permissions.dispatcher.RuntimePermissions
 
-@RuntimePermissions
-class NearByConSampleActivity : AppCompatActivity() {
+class ListSampleActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_near_by_con_sample)
+        setContentView(R.layout.activity_list_sample)
+
+        val actionBar = supportActionBar
+        actionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        val listItem = ArrayList<String>()
+        listItem.add("画面を下に引っ張るとlistにデータが追加されます")
+
+        //ListView
+        val listAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItem)
+        list_view.adapter = listAdapter
+
+        //SwipeRefreshLayout
+        swipe_refresh.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW)
+        swipe_refresh.setOnRefreshListener{
+            //onRefresh()
+            async {
+                try {
+                    val addItemJob = async(UI) { listItem.add("Data") }
+                    val syncAdapterJob = async(UI) {
+                        listAdapter.notifyDataSetChanged()
+                        addItemJob.await()
+                    }
+                    async(UI) { swipe_refresh.isRefreshing = false
+                        syncAdapterJob.await() }
+
+                } catch (e: CancellationException){ e.printStackTrace()
+                } catch (e: Exception){ e.printStackTrace() }
+            }
+        }
     }
 
     @Override
@@ -38,7 +71,7 @@ class NearByConSampleActivity : AppCompatActivity() {
             }
 
             R.id.menuItem -> {
-                val linkText = "https://qiita.com/niusounds/items/ecc759c51da8e1f1e8a0"
+                val linkText = "https://qiita.com/daivr7774/items/c5807902c16624c57559"
                 chromeBrowseTab(Uri.parse(linkText))
 
                 return true

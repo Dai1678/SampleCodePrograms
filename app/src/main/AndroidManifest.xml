@@ -25,7 +25,7 @@
         </activity>
         <activity android:name=".button.ButtonSampleActivity" />
         <activity android:name=".text.TextSampleActivity" />
-        <activity android:name=".nearby.NearByConSampleActivity"/>
+        <activity android:name=".list.ListSampleActivity" />
     </application>
 
 </manifest>
