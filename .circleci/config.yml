@@ -87,6 +87,9 @@ jobs:
       - attach_workspace: *attach_workspace_sample_code_programs
       - run: *init_bash
       - restore_cache: *restore_gradle_cache
+      - add_ssh_keys:
+          fingerprints:
+            - "2b:07:73:d6:b9:f0:ef:b9:25:53:81:73:83:6d:21:c6"
       - run:
           name: Attach debug tag
           command: |
