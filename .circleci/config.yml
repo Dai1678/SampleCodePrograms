@@ -87,9 +87,7 @@ jobs:
       - attach_workspace: *attach_workspace_sample_code_programs
       - run: *init_bash
       - restore_cache: *restore_gradle_cache
-      - add_ssh_keys:
-          fingerprints:
-            - "99:54:71:7f:70:e1:17:78:27:71:8c:1e:60:2a:64:43"
+      - run: echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
       - run:
           name: Attach debug tag
           command: |
