@@ -16,7 +16,7 @@ notificate_failed:
 - run: &notify_failed
     name: Post to Slack on fail
     command: |
-      curl -X POST --data-urlencode "payload={\"channel\": \"#ci_notification\", \"username\": \"webhookbot\", \"text\": \"CIに失敗しました。\", \"icon_emoji\": \":ghost:\"}" $SLACK_WEB_HOOK
+      curl -X POST --data-urlencode "payload={\"channel\": \"#ci_notification\", \"username\": \"webhookbot\", \"text\": \"@here CIに失敗しました。\", \"icon_emoji\": \":ghost:\"}" $SLACK_WEB_HOOK
     when: on_fail
 
 defaults: &defaults
