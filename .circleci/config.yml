@@ -87,7 +87,12 @@ jobs:
       - attach_workspace: *attach_workspace_sample_code_programs
       - run: *init_bash
       - restore_cache: *restore_gradle_cache
-      - run: echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+      - run:
+          name: Setting continue connecting to Github
+          command: |
+            echo > ~/.ssh/config
+            echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+
       - run:
           name: Attach debug tag
           command: |
