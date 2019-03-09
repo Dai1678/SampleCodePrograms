@@ -7,17 +7,15 @@ import android.content.res.Resources
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.customtabs.CustomTabsIntent
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.activity_list_sample.*
-import kotlinx.coroutines.experimental.CancellationException
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.*
 import net.ddns.dai.samplecodeprograms.R
 
 class ListSampleActivity : AppCompatActivity() {
@@ -38,20 +36,25 @@ class ListSampleActivity : AppCompatActivity() {
 
         //SwipeRefreshLayout
         swipe_refresh.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW)
-        swipe_refresh.setOnRefreshListener{
+        swipe_refresh.setOnRefreshListener {
             //onRefresh()
-            async {
+            GlobalScope.launch(Dispatchers.Main) {
                 try {
-                    val addItemJob = async(UI) { listItem.add("Data") }
-                    val syncAdapterJob = async(UI) {
+                    val addItemJob = async { listItem.add("Data") }
+                    val syncAdapterJob = async {
                         listAdapter.notifyDataSetChanged()
                         addItemJob.await()
                     }
-                    async(UI) { swipe_refresh.isRefreshing = false
-                        syncAdapterJob.await() }
+                    async {
+                        swipe_refresh.isRefreshing = false
+                        syncAdapterJob.await()
+                    }
 
-                } catch (e: CancellationException){ e.printStackTrace()
-                } catch (e: Exception){ e.printStackTrace() }
+                } catch (e: CancellationException) {
+                    e.printStackTrace()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
         }
     }
@@ -64,7 +67,7 @@ class ListSampleActivity : AppCompatActivity() {
 
     @Override
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId) {
             android.R.id.home -> {
                 finish()
                 return true
@@ -81,9 +84,9 @@ class ListSampleActivity : AppCompatActivity() {
     }
 
     @SuppressLint("PrivateResource")
-    private fun chromeBrowseTab(uri: Uri){
+    private fun chromeBrowseTab(uri: Uri) {
 
-        val  intent = Intent(Intent.ACTION_SEND)
+        val intent = Intent(Intent.ACTION_SEND)
                 .setType("text/plain")
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .putExtra(Intent.EXTRA_TEXT, uri.toString())
