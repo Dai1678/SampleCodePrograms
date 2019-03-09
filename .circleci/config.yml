@@ -80,6 +80,17 @@ jobs:
           name: assembleDebug
           command: ./gradlew assembleDebug
 
+  attach_tag_debug:
+    <<: *defaults
+    steps:
+      - attach_workspace: *attach_workspace_sample_code_programs
+      - run: *init_bash
+      - run:
+          name: Attach debug tag
+          command: |
+            git tag v_0.1
+            git push origin --tags
+
 workflows:
   version: 2
   run_ci:
@@ -91,5 +102,8 @@ workflows:
       - build_debug:
           requires:
           - fetch
+      - attach_tag_debug:
+          requires:
+          - build_debug
 
 
