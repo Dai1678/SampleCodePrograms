@@ -22,6 +22,17 @@ defaults: &defaults
     TZ: Asia/Tokyo
 
 jobs:
+  build: #Circle CI API Call用
+    <<: *defaults
+    steps:
+    - checkout
+    - run: *init_bash
+    - run:
+        name: Run from slack
+        command: |
+          chmod +x .circleci/scripts/deploy.sh
+          ./.circleci/scripts/deploy.sh
+
   fetch:
     <<: *defaults
     steps:
@@ -98,31 +109,10 @@ jobs:
             git tag v_0.1
             git push origin --tags
 
-  build: #Circle CI API Call用
-    <<: *defaults
-    steps:
-      - attach_workspace: *attach_workspace_sample_code_programs
-      - run: *init_bash
-      - restore_cache: *restore_gradle_cache
-      - run:
-          name: Run from slack
-          command: |
-            chmod +x .circleci/scripts/deploy.sh
-            ./.circleci/scripts/deploy.sh
-
 workflows:
   version: 2
   run_ci:
     jobs:
       - fetch
-      - test:
-          requires:
-          - fetch
-      - build_debug:
-          requires:
-          - fetch
-      - attach_tag_debug:
-          requires:
-          - build_debug
 
 
