@@ -10,6 +10,7 @@ shared_build_steps:
     name: Source the bash source
     command: |
       echo "export REPOSITORY_ROOT=$(git rev-parse --show-toplevel)" >> $BASH_ENV
+      echo "export PATH="${REPOSITORY_ROOT}/.circleci/scripts:$PATH"" >> $BASH_ENV
       source $BASH_ENV
 
 defaults: &defaults
@@ -96,6 +97,18 @@ jobs:
           command: |
             git tag v_0.1
             git push origin --tags
+
+  build: #Circle CI API Call用
+    <<: *defaults
+    steps:
+      - attach_workspace: *attach_workspace_sample_code_programs
+      - run: *init_bash
+      - restore_cache: *restore_gradle_cache
+      - run:
+          name: Run from slack
+          command: |
+            chmod +x .circleci/scripts/deploy.sh
+            ./.circleci/scripts/deploy.sh
 
 workflows:
   version: 2
