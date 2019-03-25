@@ -8,7 +8,7 @@ cache_keys:
 defaults: &defaults
   working_directory: ~/sample_code_programs
   docker:
-  - image: circleci/android:api-27-alpha
+  - image: circleci/android:api-28-alpha
   environment:
     JVM_OPTS: -Xmx3200m
     TZ: Asia/Tokyo
@@ -27,8 +27,8 @@ jobs:
           echo y | /opt/android/sdk/tools/bin/sdkmanager --include_obsolete "extras;android;m2repository"
           echo y | /opt/android/sdk/tools/bin/sdkmanager --include_obsolete "extras;google;google_play_services"
           echo y | /opt/android/sdk/tools/bin/sdkmanager --include_obsolete "extras;google;m2repository"
-          echo y | /opt/android/sdk/tools/bin/sdkmanager --include_obsolete "platforms;android-27"
-          echo y | /opt/android/sdk/tools/bin/sdkmanager --include_obsolete "build-tools;27.0.0"
+          echo y | /opt/android/sdk/tools/bin/sdkmanager --include_obsolete "platforms;android-28"
+          echo y | /opt/android/sdk/tools/bin/sdkmanager --include_obsolete "build-tools;28.0.0"
     - run:
         name: Download Dependencies
         command: ./gradlew androidDependencies
