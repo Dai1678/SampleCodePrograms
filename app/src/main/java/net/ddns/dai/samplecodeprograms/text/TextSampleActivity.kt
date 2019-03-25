@@ -6,15 +6,16 @@ import android.content.Intent
 import android.content.res.Resources
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.customtabs.CustomTabsIntent
-import android.support.design.widget.Snackbar
-import android.support.v4.content.ContextCompat
-import android.text.*
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_text_sample.*
 import net.ddns.dai.samplecodeprograms.R
 import java.text.SimpleDateFormat
@@ -43,16 +44,16 @@ class TextSampleActivity : AppCompatActivity() {
             val inputUserName = userNameInput.text.toString()
             val inputUserPassWord = userPassWordInput.text.toString()
 
-            if (inputUserPassWord == ""){
+            if (inputUserPassWord == "") {
                 //yourPassWordの入力を促す
                 showResult(view, noInput)
-            }else{
+            } else {
                 val loginResult = name == inputUserName && yourPassWord == inputUserPassWord
 
-                if (loginResult){
+                if (loginResult) {
                     //login
                     showResult(view, login)
-                }else{
+                } else {
                     //error
                     showResult(view, error)
                 }
@@ -60,7 +61,7 @@ class TextSampleActivity : AppCompatActivity() {
 
         }
 
-        userNameInput.addTextChangedListener(object: TextWatcher {
+        userNameInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(editable: Editable) {}
             override fun onTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
@@ -89,7 +90,7 @@ class TextSampleActivity : AppCompatActivity() {
     }
 
     @SuppressLint("SimpleDateFormat")
-    private fun showResult(view: View, result: Int){
+    private fun showResult(view: View, result: Int) {
 
         var showText = ""
         val dateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
@@ -120,7 +121,7 @@ class TextSampleActivity : AppCompatActivity() {
 
     @Override
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId) {
             android.R.id.home -> {
                 finish()
                 return true
@@ -137,9 +138,9 @@ class TextSampleActivity : AppCompatActivity() {
     }
 
     @SuppressLint("PrivateResource")
-    private fun chromeBrowseTab(uri: Uri){
+    private fun chromeBrowseTab(uri: Uri) {
 
-        val  intent = Intent(Intent.ACTION_SEND)
+        val intent = Intent(Intent.ACTION_SEND)
                 .setType("text/plain")
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .putExtra(Intent.EXTRA_TEXT, uri.toString())

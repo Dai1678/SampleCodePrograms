@@ -7,14 +7,13 @@ import android.content.res.Resources
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.support.customtabs.CustomTabsIntent
-import android.support.design.widget.Snackbar
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-
+import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_button_sample.*
 import net.ddns.dai.samplecodeprograms.R
 
@@ -37,14 +36,14 @@ class ButtonSampleActivity : AppCompatActivity(), View.OnClickListener {
     @SuppressLint("SetTextI18n")
     override fun onClick(view: View) {
 
-        when (view.id){     //switch文はないのでwhen文を使う
+        when (view.id) {     //switch文はないのでwhen文を使う
             R.id.textChangeButton -> {
-                this.flag = if (flag){
+                this.flag = if (flag) {
                     changeText.text = "押してください"
                     textChangeButton.text = "BUTTON"
                     false
 
-                }else{
+                } else {
                     changeText.text = "Buttonが押されました"
                     textChangeButton.text = "戻す"
                     true
@@ -66,7 +65,7 @@ class ButtonSampleActivity : AppCompatActivity(), View.OnClickListener {
 
     @Override
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId) {
             android.R.id.home -> {
                 finish()
                 return true
@@ -83,9 +82,9 @@ class ButtonSampleActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     @SuppressLint("PrivateResource")
-    private fun chromeBrowseTab(uri: Uri){
+    private fun chromeBrowseTab(uri: Uri) {
 
-        val  intent = Intent(Intent.ACTION_SEND)
+        val intent = Intent(Intent.ACTION_SEND)
                 .setType("text/plain")
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .putExtra(Intent.EXTRA_TEXT, uri.toString())

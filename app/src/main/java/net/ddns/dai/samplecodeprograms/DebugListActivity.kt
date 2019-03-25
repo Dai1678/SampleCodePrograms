@@ -3,11 +3,11 @@ package net.ddns.dai.samplecodeprograms
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.NameNotFoundException
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import androidx.appcompat.app.AppCompatActivity
 
 class DebugListActivity : AppCompatActivity() {
 
@@ -27,21 +27,22 @@ class DebugListActivity : AppCompatActivity() {
                     .filter { it.name.contains(packageName) }   //ライブラリなどのactivityは表示しないように比較
                     .mapTo(list) { it.name.split(Regex("$packageName."), 0)[1] }  // activity名のみ取得できるようにsplit
 
-        }catch (e: NameNotFoundException){
+        } catch (e: NameNotFoundException) {
             e.printStackTrace()
         }
 
         val arrayAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list)
         listView.adapter = arrayAdapter //代入する形
 
-        listView.onItemClickListener = AdapterView.OnItemClickListener{ parent, _, position, _ ->   //使ってない引数は_で省略できる
+        listView.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
+            //使ってない引数は_で省略できる
             val activityName = parent.getItemAtPosition(position)
             try {
                 //パッケージ名を追加してclassを指定
                 val myClass = Class.forName("$packageName.$activityName")   // + "~" + で繋げなくても$変数名でできる
                 val intent = Intent(this, myClass)
                 startActivity(intent)
-            }catch (e: ClassNotFoundException){
+            } catch (e: ClassNotFoundException) {
                 e.printStackTrace()
             }
         }
