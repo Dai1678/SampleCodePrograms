@@ -5,14 +5,6 @@ cache_keys:
     keys: &all_keys_of_gradle_cache
     - *primary_key_of_gradle_cache
 
-shared_build_steps:
-- run: &init_bash
-    name: Source the bash source
-    command: |
-      echo "export REPOSITORY_ROOT=$(git rev-parse --show-toplevel)" >> $BASH_ENV
-      echo "export PATH="${REPOSITORY_ROOT}/.circleci/scripts:$PATH"" >> $BASH_ENV
-      source $BASH_ENV
-
 defaults: &defaults
   working_directory: ~/sample_code_programs
   docker:
@@ -22,29 +14,21 @@ defaults: &defaults
     TZ: Asia/Tokyo
 
 jobs:
-  build: #Circle CI API Call用
-    <<: *defaults
-    steps:
-    - checkout
-    - run: *init_bash
-    - run:
-        name: Run from slack
-        command: |
-          chmod +x .circleci/scripts/deploy.sh
-          ./.circleci/scripts/deploy.sh
-
   fetch:
     <<: *defaults
     steps:
     - checkout
-    - run: *init_bash
     - restore_cache: &restore_gradle_cache
         keys: *all_keys_of_gradle_cache
     - run:
         name: update android sdk
         command: |
-          echo y | android update sdk --no-ui --all --filter tool,extra-android-m2repository,extra-google-google_play_services,extra-google-m2repository,android-27
-          echo y | android update sdk --no-ui --all --filter build-tools-27.0.0
+          echo y | /opt/android/sdk/tools/bin/sdkmanager --include_obsolete "tools"
+          echo y | /opt/android/sdk/tools/bin/sdkmanager --include_obsolete "extras;android;m2repository"
+          echo y | /opt/android/sdk/tools/bin/sdkmanager --include_obsolete "extras;google;google_play_services"
+          echo y | /opt/android/sdk/tools/bin/sdkmanager --include_obsolete "extras;google;m2repository"
+          echo y | /opt/android/sdk/tools/bin/sdkmanager --include_obsolete "platforms;android-27"
+          echo y | /opt/android/sdk/tools/bin/sdkmanager --include_obsolete "build-tools;27.0.0"
     - run:
         name: Download Dependencies
         command: ./gradlew androidDependencies
@@ -53,7 +37,6 @@ jobs:
         - ~/.android
         - ~/.gradle
         - .gradle
-        - ~/.ssh
         key: *primary_key_of_gradle_cache
     - persist_to_workspace:
         root: .
@@ -65,7 +48,6 @@ jobs:
     steps:
     - attach_workspace: &attach_workspace_sample_code_programs
         at: .
-    - run: *init_bash
     - restore_cache: *restore_gradle_cache
     - run:
         name: Run Tests
@@ -87,32 +69,22 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace: *attach_workspace_sample_code_programs
-      - run: *init_bash
       - restore_cache: *restore_gradle_cache
       - run:
           name: assembleDebug
           command: ./gradlew assembleDebug
-
-  attach_tag_debug:
-    <<: *defaults
-    steps:
-      - attach_workspace: *attach_workspace_sample_code_programs
-      - run: *init_bash
-      - restore_cache: *restore_gradle_cache
-      - run:
-          name: Setting connect to Github
-          command: |
-            mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
-      - run:
-          name: Attach debug tag
-          command: |
-            git tag v_0.1
-            git push origin --tags
 
 workflows:
   version: 2
   run_ci:
     jobs:
       - fetch
+      - test:
+          requires:
+            - fetch
+      - build_debug:
+          requires:
+            - fetch
+
 
 
